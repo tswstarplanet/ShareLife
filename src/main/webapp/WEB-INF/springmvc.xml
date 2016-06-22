@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p2="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="spittr" />
+    <mvc:default-servlet-handler />
+    <mvc:annotation-driven />
+    <mvc:resources mapping="/webinfo/**" location="/WEB-INF/" />
+
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="order" value="3"/>
+    </bean>
+
+    <!-- <bean id="urlBasedViewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver" p2:order="1">
+        <property name="viewClass">
+            <value>
+                org.springframework.web.servlet.view.tiles3.TilesView
+            </value>
+        </property>
+    </bean> !-->
+
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/layout/tiles.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" p2:order="2"/>
+
+    <bean id="thymeleafView" class="org.thymeleaf.spring4.view.ThymeleafViewResolver"
+          p2:order="1"
+          p2:templateEngine-ref="templateEngine" />
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring4.SpringTemplateEngine"
+          p2:templateResolver-ref="templateResolver" />
+
+    <bean id="templateResolver"
+          class="org.thymeleaf.templateresolver.ServletContextTemplateResolver"
+          p2:prefix="/WEB-INF/templates/"
+          p2:suffix=".html"
+          p2:templateMode="HTML5" >
+        <constructor-arg ref="servletContext"/>
+    </bean>
+
+</beans>

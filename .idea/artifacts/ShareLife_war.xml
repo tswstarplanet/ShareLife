@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ShareLife:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="sharelife.war">
+      <element id="artifact" artifact-name="ShareLife:war exploded" />
+    </root>
+  </artifact>
+</component>
