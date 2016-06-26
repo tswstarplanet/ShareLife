@@ -13,7 +13,7 @@ public class Spitter {
     private Long id;
 
     @NotNull
-    @Size(min = 5, max = 16, message = "{username.size}")
+    @Size(min = 5, max = 16, message = "{abc username.size}")
     private String username;
 
     @NotNull
@@ -29,7 +29,7 @@ public class Spitter {
     private String lastName;
 
     @NotNull
-    @Email(message = "email.valid")
+    @Email(regexp = "/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/", message = "email.valid")
     private String email;
 
     public Long getId() {

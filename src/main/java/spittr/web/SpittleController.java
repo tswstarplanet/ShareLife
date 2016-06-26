@@ -3,13 +3,11 @@ package spittr.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import spittr.Spittle;
 import spittr.data.SpittleRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,8 +46,26 @@ public class SpittleController {
     public String spittle(
             @PathVariable long spittleId,
             Model model) {
-        model.addAttribute(spittleRepository.findOne(spittleId));
+        Spittle spittle = spittleRepository.findOne(spittleId);
+        if (spittle == null) {
+            throw new SpittleNotFoundException();
+        }
+        model.addAttribute(spittle);
         return "spittle";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveSpittle(Spittle spittle, Model model) {
+        spittleRepository.save(
+                new Spittle(spittle.getMessage(), new Date(),
+                        spittle.getLongitude(), spittle.getLatitude())
+        );
+        return "redirect:/spittles";
+    }
+
+    @ExceptionHandler(DuplicateSpittleException.class)
+    public String handleDuplicateSpittle() {
+        return "error/duplicate";
     }
 
 
